@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="ja" data-build="github" translate="no">
+<head>
+<meta charset="UTF-8">
+<!--
+═══════════════════════════════════════════════════════════════════
+  Tsui Note
+═══════════════════════════════════════════════════════════════════
+
+  Name:        Tsui Note
+  Author:      Hajime Tsui
+  Version:     0.1.0
+
+  ─── License ─────────────────────────────────────────────────────
+
+  MIT License — © 2026 Hajime Tsui
+
+═══════════════════════════════════════════════════════════════════
+-->
+<style id="antiClickjack">html{display:none !important;}</style>
+<script>(function(){
+  function lockHidden() {
+    try {
+      document.documentElement.style.setProperty('display', 'none', 'important');
+    } catch (e) {}
+  }
+
+  function wipe() {
+    lockHidden();
+    try { document.documentElement.innerHTML = ''; } catch (e) {}
+    lockHidden();
+  }
+
+  if (self === top) {
+    
+    try {
+      var s = document.getElementById('antiClickjack');
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+    } catch (e) {}
+    return;
+  }
+
+  lockHidden();
+  try { top.location = self.location.href; } catch (e) {}
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wipe, { once: true });
+    window.addEventListener('load', wipe, { once: true });
+  } else {
+    wipe();
+  }
+})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A quiet, browser-based scratchpad. One window, one buffer. Open and save local files; no folder access. / 静かな書き場。1ウィンドウ=1バッファ。ローカルファイルの読み書きはするが、フォルダ管理は持たない。">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="google" content="notranslate">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; manifest-src 'self' data:; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none';">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%231a1a1a%22%2F%3E%3Cpath%20d%3D%22M160%20120h160l72%2072v280a20%2020%200%200%201-20%2020H160a20%2020%200%200%201-20-20V140a20%2020%200%200%201%2020-20z%22%20fill%3D%22none%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2216%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M320%20120v60h72%22%20fill%3D%22none%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2216%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cline%20x1%3D%22180%22%20y1%3D%22240%22%20x2%3D%22352%22%20y2%3D%22240%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22180%22%20y1%3D%22280%22%20x2%3D%22352%22%20y2%3D%22280%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22180%22%20y1%3D%22320%22%20x2%3D%22352%22%20y2%3D%22320%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22180%22%20y1%3D%22360%22%20x2%3D%22280%22%20y2%3D%22360%22%20stroke%3D%22%237dd3c0%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" type="image/svg+xml">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Tsui%20Note%22%2C%22short_name%22%3A%22Tsui%20Note%22%2C%22description%22%3A%22A%20quiet%2C%20browser-based%20scratchpad.%20One%20window%2C%20one%20buffer.%20Open%20and%20save%20local%20files%3B%20no%20folder%20access.%20%2F%20%E9%9D%99%E3%81%8B%E3%81%AA%E6%9B%B8%E3%81%8D%E5%A0%B4%E3%80%821%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%3D1%E3%83%90%E3%83%83%E3%83%95%E3%82%A1%E3%80%82%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E8%AA%AD%E3%81%BF%E6%9B%B8%E3%81%8D%E3%81%AF%E3%81%99%E3%82%8B%E3%81%8C%E3%80%81%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E7%AE%A1%E7%90%86%E3%81%AF%E6%8C%81%E3%81%9F%E3%81%AA%E3%81%84%E3%80%82%22%2C%22start_url%22%3A%22.%2F%22%2C%22scope%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231a1a1a%22%2C%22theme_color%22%3A%22%231a1a1a%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMWExYTFhIi8%2BPHBhdGggZD0iTTE2MCAxMjBoMTYwbDcyIDcydjI4MGEyMCAyMCAwIDAgMS0yMCAyMEgxNjBhMjAgMjAgMCAwIDEtMjAtMjBWMTQwYTIwIDIwIDAgMCAxIDIwLTIweiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjN2RkM2MwIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8%2BPHBhdGggZD0iTTMyMCAxMjB2NjBoNzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzdkZDNjMCIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxsaW5lIHgxPSIxODAiIHkxPSIyNDAiIHgyPSIzNTIiIHkyPSIyNDAiIHN0cm9rZT0iIzdkZDNjMCIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8%2BPGxpbmUgeDE9IjE4MCIgeTE9IjI4MCIgeDI9IjM1MiIgeTI9IjI4MCIgc3Ryb2tlPSIjN2RkM2MwIiBzdHJva2Utd2lkdGg9IjE0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48bGluZSB4MT0iMTgwIiB5MT0iMzIwIiB4Mj0iMzUyIiB5Mj0iMzIwIiBzdHJva2U9IiM3ZGQzYzAiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxsaW5lIHgxPSIxODAiIHkxPSIzNjAiIHgyPSIyODAiIHkyPSIzNjAiIHN0cm9rZT0iIzdkZDNjMCIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8%2BPC9zdmc%2B%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #1a1a1a;
+  --bg-elevated: #222;
+  --bg-hover: #2a2a2a;
+  --bg-active: #333;
+  --fg: #e4e4e4;
+  --fg-dim: #888;
+  --fg-faint: #555;
+  --accent: #7dd3c0;
+  --border: #2a2a2a;
+  --modified: #e8b842;
+  --danger: #e57373;
+  --ui-font-delta: 0px;  
+  --glow-color: transparent;
+}
+
+html[data-theme="green"]  { --accent:#39ff77; --glow-color:#39ff77; }
+html[data-theme="amber"]  { --accent:#ffb000; --glow-color:#ffb000; }
+html[data-theme="red"]    { --accent:#ffc0b8; --glow-color:#ff2020; }
+html[data-theme="pink"]   { --accent:#ffc8f0; --glow-color:#ff26b3; }
+html[data-theme="cyber"]  { --accent:#B2FFCA; --glow-color:#39ff77; }
+
+html[data-theme] .title,
+html[data-theme] .modal-body h3,
+html[data-theme] .modal-body .app-name {
+  text-shadow: 0 0 8px var(--glow-color), 0 0 16px var(--glow-color);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: calc(10px + var(--ui-font-delta));
+  background: var(--bg-elevated);
+  min-width: 0;
+}
+header button {
+  padding: calc(5px + var(--ui-font-delta) / 2) calc(12px + var(--ui-font-delta));
+  font-size: calc(12px + var(--ui-font-delta));
+}
+
+.title { font-weight: 600; letter-spacing: 1px; font-size: 12px; color: var(--accent); flex-shrink: 0; }
+
+.doc-name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(12px + var(--ui-font-delta));
+  color: var(--fg-dim);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.doc-dirty {
+  color: var(--modified);
+  font-size: calc(12px + var(--ui-font-delta));
+  margin-left: -6px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+button:hover:not(:disabled) { background: var(--bg-hover); border-color: var(--accent); }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+button.primary { background: var(--accent); color: #111; border-color: var(--accent); font-weight: 600; }
+button.primary:hover:not(:disabled) { background: #9ae0d0; }
+
+#btn-new-window, #btn-settings {
+  
+  padding: calc(5px + var(--ui-font-delta) / 2) calc(9px + var(--ui-font-delta));
+  font-size: calc(13px + var(--ui-font-delta));
+}
+
+main {
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#editor-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.editor-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+#editor {
+  flex: 1;
+  background: var(--bg);
+  color: var(--fg);
+  border: none;
+  padding: 14px 18px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  line-height: 1.65;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+  white-space: pre;
+  width: 100%;
+  height: 100%;
+}
+#editor:disabled { color: var(--fg-faint); }
+#editor::placeholder { color: var(--fg-faint); }
+
+body.wrap-on #editor {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  padding: 5px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+  font-size: calc(11px + var(--ui-font-delta));
+  color: var(--fg-dim);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  overflow: hidden;
+}
+#status-info { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.footer-hint { white-space: nowrap; flex-shrink: 0; }
+
+.kbd {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: var(--bg-active);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10.5px;
+  border: 1px solid var(--border);
+}
+
+.footer-pill {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(10.5px + var(--ui-font-delta));
+  padding: 1px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  color: var(--fg-dim);
+  background: transparent;
+  flex-shrink: 0;
+}
+.footer-pill:hover { color: var(--fg); border-color: var(--accent); }
+#pill-readonly { color: var(--modified); border-color: var(--modified); }
+
+.settings-popover {
+  position: fixed;
+  top: 56px;
+  right: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-width: 240px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.settings-popover[hidden] { display: none; }
+
+.popover-backdrop {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 1400;
+}
+.popover-backdrop[hidden] { display: none; }
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  font-size: calc(11.5px + var(--ui-font-delta));
+}
+
+.settings-label {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(10px + var(--ui-font-delta));
+  color: var(--fg-faint);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: calc(64px + var(--ui-font-delta));
+  flex-shrink: 0;
+}
+
+.font-btn {
+  width: calc(22px + var(--ui-font-delta));
+  height: calc(22px + var(--ui-font-delta));
+  padding: 0;
+  font-size: calc(12px + var(--ui-font-delta));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#font-size-display {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(11px + var(--ui-font-delta));
+  color: var(--fg-dim);
+  min-width: calc(36px + var(--ui-font-delta));
+  text-align: center;
+}
+
+.settings-reset {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(10px + var(--ui-font-delta));
+  color: var(--fg-faint);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  user-select: none;
+  margin-left: auto;
+}
+.settings-reset:hover { color: var(--accent); background: var(--bg-hover); }
+
+.wrap-btn, .ui-size-btn {
+  padding: 3px 8px;
+  font-size: calc(10.5px + var(--ui-font-delta));
+}
+.wrap-btn.active, .ui-size-btn.active {
+  background: var(--accent);
+  color: #111;
+  border-color: var(--accent);
+}
+
+.theme-dot {
+  width: calc(18px + var(--ui-font-delta));
+  height: calc(18px + var(--ui-font-delta));
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-hover);
+  cursor: pointer;
+}
+.theme-dot:hover { transform: scale(1.1); }
+.theme-dot[data-theme="calm"]  { background: #7dd3c0; }
+.theme-dot[data-theme="green"] { background: #39ff77; }
+.theme-dot[data-theme="amber"] { background: #ffb000; }
+.theme-dot[data-theme="red"]   { background: #ffc0b8; box-shadow: 0 0 6px #ff2020; }
+.theme-dot[data-theme="pink"]  { background: #ffc8f0; box-shadow: 0 0 6px #ff26b3; }
+.theme-dot[data-theme="cyber"] { background: #B2FFCA; box-shadow: 0 0 6px #39ff77; }
+.theme-dot.active {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.settings-about-row {
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  padding-top: 8px;
+}
+.settings-about {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(10.5px + var(--ui-font-delta));
+  color: var(--fg-faint);
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 6px;
+  border-radius: 3px;
+}
+.settings-about:hover { color: var(--accent); background: var(--bg-hover); }
+
+.context-menu {
+  position: fixed;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 1600;
+  display: none;
+}
+.context-item {
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--fg);
+  user-select: none;
+}
+.context-item:hover { background: var(--bg-hover); }
+.context-item.heading { color: var(--fg-faint); font-size: 10.5px; cursor: default; }
+.context-item.heading:hover { background: transparent; }
+.context-separator { height: 1px; background: var(--border); margin: 4px 2px; }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+.modal-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.modal-close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--fg-dim);
+  border-color: transparent;
+}
+.modal-close:hover { color: var(--fg); background: var(--bg-hover); }
+.modal-body {
+  padding: 20px 24px 24px;
+  overflow-y: auto;
+  color: var(--fg);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+.modal-body h3 {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin: 18px 0 6px;
+}
+.modal-body h3:first-child { margin-top: 0; }
+.modal-body p { color: var(--fg-dim); margin-bottom: 2px; }
+.modal-body .version-line {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--fg-faint);
+  margin-bottom: 16px;
+}
+.modal-body .app-name {
+  font-size: 16px;
+  color: var(--fg);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.modal-body .license-text {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.modal-body .author-line {
+  font-size: 11px;
+  color: var(--fg-dim);
+  margin-bottom: 8px;
+}
+.modal-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.modal-body a:hover { text-decoration: underline; }
+.modal-body code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 0.92em;
+  color: var(--fg);
+}
+
+@media (max-width: 768px) {
+  header { padding: 8px 10px; gap: calc(8px + var(--ui-font-delta)); }
+  .title { display: none; }
+  header button {
+    padding: calc(8px + var(--ui-font-delta) / 2) calc(11px + var(--ui-font-delta));
+    font-size: calc(13px + var(--ui-font-delta));
+    min-height: 40px;
+  }
+  .doc-name { font-size: calc(11px + var(--ui-font-delta)); }
+
+  footer { padding: 5px 10px; font-size: calc(10px + var(--ui-font-delta)); gap: 8px; }
+  .footer-hint { display: none; }
+
+  footer { padding-bottom: calc(5px + env(safe-area-inset-bottom, 0px)); }
+
+  .settings-popover {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    min-width: 0;
+  }
+}
+
+.initially-hidden.initially-hidden { display: none; }
+</style>
+<title>Tsui Note</title>
+</head>
+<body>
+<header>
+  <span class="title" data-i18n="app.brand">TSUI NOTE</span>
+  <span class="doc-name" id="doc-name" data-i18n="header.doc.untitled">untitled</span>
+  <span class="doc-dirty initially-hidden" id="doc-dirty"
+        data-i18n-attr="title=header.docDirty.title"
+        title="未保存の変更があります" aria-hidden="true">●</span>
+  <button id="btn-open"
+          data-i18n="header.btn.open"
+          data-i18n-attr="title=header.btn.open.title"
+          title="ファイルを開く">開く</button>
+  <button id="btn-save" class="primary"
+          data-i18n="header.btn.save"
+          data-i18n-attr="title=header.btn.save.title"
+          title="保存 (Ctrl+S)" disabled>保存</button>
+  <button id="btn-save-as"
+          data-i18n="header.btn.saveAs"
+          data-i18n-attr="title=header.btn.saveAs.title"
+          title="別名で保存 (Ctrl+Shift+S)">別名</button>
+  <button id="btn-new-window"
+          data-i18n-attr="title=header.btn.newWindow.title"
+          title="新しいウィンドウを開く" aria-label="New window">⧉</button>
+  <button id="btn-settings"
+          data-i18n-attr="title=header.btn.settings.title"
+          title="設定" aria-label="Settings"
+          aria-expanded="false" aria-controls="settings-popover">⚙</button>
+  <button id="btn-lang" title="Switch language / 言語切替">JA</button>
+</header>
+<main>
+  <section id="editor-area">
+    <div class="editor-wrap">
+      <textarea id="editor" spellcheck="false"
+                data-i18n-attr="placeholder=editor.placeholder"
+                placeholder="ここに書きます。"></textarea>
+    </div>
+  </section>
+</main>
+<footer>
+  <span id="status-info"></span>
+  <span class="footer-pill initially-hidden" id="pill-readonly">READONLY</span>
+  <span class="footer-pill initially-hidden" id="pill-encoding"
+        data-i18n-attr="title=footer.pill.encoding.title"
+        title="文字エンコーディング (クリックで変更)">UTF-8</span>
+  <span class="footer-pill initially-hidden" id="pill-eol"
+        data-i18n-attr="title=footer.pill.eol.title"
+        title="改行コード (クリックで変換)">LF</span>
+  <span class="footer-hint"><span data-i18n="footer.hint.save">保存</span> <span class="kbd">Ctrl</span>+<span class="kbd">S</span> · <span data-i18n="footer.hint.saveAs">別名</span> <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">S</span></span>
+</footer>
+
+<div class="settings-popover" id="settings-popover" role="dialog" aria-modal="false" aria-labelledby="settings-popover-title" hidden>
+  <div class="settings-row">
+    <span class="settings-label" data-i18n="settings.font.label">Font</span>
+    <button class="font-btn" id="btn-font-dec"
+            data-i18n-attr="title=settings.font.dec.title"
+            title="フォント縮小">−</button>
+    <span id="font-size-display">13px</span>
+    <button class="font-btn" id="btn-font-inc"
+            data-i18n-attr="title=settings.font.inc.title"
+            title="フォント拡大">＋</button>
+    <span class="settings-reset" id="btn-font-reset"
+          data-i18n="settings.font.reset"
+          data-i18n-attr="title=settings.font.reset.title"
+          title="リセット">reset</span>
+  </div>
+  <div class="settings-row">
+    <span class="settings-label" data-i18n="settings.wrap.label">Wrap</span>
+    <button class="wrap-btn" data-wrap="on"
+            data-i18n="settings.wrap.on"
+            data-i18n-attr="title=settings.wrap.on.title"
+            title="長い行をエディタ幅で折り返す">Wrap</button>
+    <button class="wrap-btn" data-wrap="off"
+            data-i18n="settings.wrap.off"
+            data-i18n-attr="title=settings.wrap.off.title"
+            title="折り返さず横スクロール">Scroll</button>
+  </div>
+  <div class="settings-row">
+    <span class="settings-label" data-i18n="settings.uiSize.label">Sys Font</span>
+    <button class="ui-size-btn" data-size="s"
+            data-i18n-attr="title=settings.uiSize.s.title"
+            title="小 (12.5px)">S</button>
+    <button class="ui-size-btn" data-size="m"
+            data-i18n-attr="title=settings.uiSize.m.title"
+            title="中 (17.5px)">M</button>
+    <button class="ui-size-btn" data-size="l"
+            data-i18n-attr="title=settings.uiSize.l.title"
+            title="大 (20px)">L</button>
+    <button class="ui-size-btn" data-size="xl"
+            data-i18n-attr="title=settings.uiSize.xl.title"
+            title="特大 (23px)">XL</button>
+  </div>
+  <div class="settings-row">
+    <span class="settings-label" data-i18n="settings.theme.label">Theme</span>
+    <button class="theme-dot" data-theme="calm"
+            data-i18n-attr="title=settings.theme.calm.title"
+            title="calm (default)"></button>
+    <button class="theme-dot" data-theme="green" title="green"></button>
+    <button class="theme-dot" data-theme="amber" title="amber"></button>
+    <button class="theme-dot" data-theme="red" title="red"></button>
+    <button class="theme-dot" data-theme="pink" title="pink"></button>
+    <button class="theme-dot" data-theme="cyber" title="cyber"></button>
+  </div>
+  <div class="settings-row settings-about-row">
+    <span class="settings-about" id="btn-about"
+          data-i18n-attr="title=settings.about.title"
+          title="このアプリについて">
+      <span data-i18n="settings.about.label">ABOUT</span>
+      <span id="settings-version">v0.1.0</span>
+    </span>
+  </div>
+</div>
+<div class="popover-backdrop" id="popover-backdrop" hidden></div>
+
+<div class="context-menu" id="context-menu"></div>
+
+<div class="modal-backdrop" id="modal-about">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" data-i18n="about.modalTitle">About</span>
+      <button class="modal-close" id="btn-modal-close"
+              data-i18n-attr="title=about.close"
+              title="閉じる">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="app-name">Tsui Note</div>
+      <div class="version-line">Version 0.1.0</div>
+
+      <h3 data-i18n="about.section.about">About</h3>
+      <p data-i18n-html="about.section.about.body"><strong>Tsui Note</strong> はブラウザで動く、ごく軽量なテキストの書き場です。1 ウィンドウで 1 ファイル分のテキストを編集できます。ファイルやフォルダの管理機能は持ちません。複数のことを書きたいときは、ヘッダの ⧉ ボタンで別ウィンドウを開いてください。<br>各ウィンドウの本文は独立、UI 設定はウィンドウ間で共有されます。<br>ログイン不要、インストール不要、データの外部送信なし。</p>
+
+      <h3 data-i18n="about.section.privacy">Privacy</h3>
+      <p data-i18n-html="about.section.privacy.p1">ファイルや入力内容は、本アプリ本体から外部送信されません。CSP の <code>connect-src 'none'</code> により、<code>fetch</code> 等のネットワーク送信はブラウザレベルで禁止されています。DevTools の Network タブで確認いただけます。</p>
+      <p data-i18n-html="about.section.privacy.p2">編集中の本文は <code>localStorage</code> や <code>IndexedDB</code> に保存されません。ウィンドウを閉じると消えます。保存したい内容はファイルに書き出してください。<br>UI 設定（Font / Wrap / Sys Font / Theme / Lang）は <code>localStorage</code> に保存され、同一オリジン内の別ウィンドウとリアルタイムに同期します。</p>
+      <p data-i18n-html="about.section.privacy.p3">本アプリ本体には計測機能は一切含まれていません（上記 CSP により外部送信が禁止されているため）。</p>
+      <p data-i18n="about.section.privacy.p4">一方、作者プロフィールや Tsui series のランディングページ等の情報ページでは、訪問数の把握に Cloudflare Web Analytics を利用しています（Cookie なし / フィンガープリントなし / クロスサイトトラッキングなし）。</p>
+      <p data-i18n="about.section.privacy.p5">なお、別途プラットフォーム側（配信元サーバや中継事業者等）で計測・記録されている可能性はあります。</p>
+
+      <h3 data-i18n="about.section.notice">注意</h3>
+      <p data-i18n="about.section.notice.body">本アプリは「開いたファイル 1 つ」に対してのみ読み書きを行います。フォルダ全体への権限は要求しません。File System Access API がない環境では、ダウンロード形式での書き出しになります（同じファイルへの上書きはできません）。</p>
+
+      <h3 data-i18n="about.section.disclaimer">Disclaimer</h3>
+      <p data-i18n="about.section.disclaimer.body">本アプリは現状有姿で提供され、動作の正確性・可用性について一切の保証はありません。ご利用は自己責任にてお願いします。ファイルのバックアップは利用者の責任で行ってください。</p>
+
+      <h3 data-i18n="about.section.license">License (This App)</h3>
+      <div class="author-line" data-i18n-html="about.section.license.copyright">Copyright (c) 2026 <a href="https://hajimetwi3.github.io/hajimetwi3/" target="_blank" rel="noopener noreferrer">Hajime Tsui</a></div>
+      <div class="license-text">MIT License
+
+Copyright (c) 2026 Hajime Tsui
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>
+
+      <h3 data-i18n="about.section.related">Related</h3>
+      <p data-i18n-html="about.section.related.series">本アプリは <a href="https://hajimetwi3.github.io/hajimetwi3/Tsui-series/" target="_blank" rel="noopener noreferrer">Tsui series</a>（静かな道具たち）の一つです。</p>
+      <p data-i18n-html="about.section.related.github">ソースコードは <a href="https://github.com/hajimetwi3/Tsui-note" target="_blank" rel="noopener noreferrer">GitHub</a> で公開しています。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const VALID_LANGS = ['ja', 'en'];
+const DEFAULT_LANG = 'ja';
+const LANG_KEY = 'tsui-note-lang';
+
+function safeGetStorage(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+
+const I18N_DICT = {
+  ja: {
+    
+    'app.brand': 'TSUI NOTE',
+    'header.doc.untitled': 'untitled',
+    'header.docDirty.title': '未保存の変更があります',
+    'header.btn.open': '開く',
+    'header.btn.open.title': 'ファイルを開く',
+    'header.btn.save': '保存',
+    'header.btn.save.title': '保存 (Ctrl+S)',
+    'header.btn.saveAs': '別名',
+    'header.btn.saveAs.title': '別名で保存 (Ctrl+Shift+S)',
+    'header.btn.newWindow.title': '新しいウィンドウを開く',
+    'header.btn.settings.title': '設定',
+    'header.btn.lang.title.toEn': 'Switch to English',
+    'header.btn.lang.title.toJa': '日本語に切替',
+
+    'editor.placeholder': 'ここに書きます。',
+
+    'footer.pill.encoding.title': '文字エンコーディング (クリックで変更)',
+    'footer.pill.eol.title': '改行コード (クリックで変換)',
+    'footer.hint.save': '保存',
+    'footer.hint.saveAs': '別名',
+
+    'settings.font.label': 'Font',
+    'settings.font.dec.title': 'フォント縮小',
+    'settings.font.inc.title': 'フォント拡大',
+    'settings.font.reset': 'reset',
+    'settings.font.reset.title': 'リセット',
+    'settings.wrap.label': 'Wrap',
+    'settings.wrap.on': 'Wrap',
+    'settings.wrap.on.title': '長い行をエディタ幅で折り返す',
+    'settings.wrap.off': 'Scroll',
+    'settings.wrap.off.title': '折り返さず横スクロール',
+    'settings.uiSize.label': 'Sys Font',
+    'settings.uiSize.s.title': '小 (12.5px)',
+    'settings.uiSize.m.title': '中 (17.5px)',
+    'settings.uiSize.l.title': '大 (20px)',
+    'settings.uiSize.xl.title': '特大 (23px)',
+    'settings.theme.label': 'Theme',
+    'settings.theme.calm.title': 'calm (default)',
+    'settings.about.label': 'ABOUT',
+    'settings.about.title': 'このアプリについて',
+
+    'about.modalTitle': 'About',
+    'about.close': '閉じる',
+    'about.section.about': 'About',
+    'about.section.about.body': '<strong>Tsui Note</strong> はブラウザで動く、ごく軽量なテキストの書き場です。1 ウィンドウで 1 ファイル分のテキストを編集できます。ファイルやフォルダの管理機能は持ちません。複数のことを書きたいときは、ヘッダの ⧉ ボタンで別ウィンドウを開いてください。<br>各ウィンドウの本文は独立、UI 設定はウィンドウ間で共有されます。<br>ログイン不要、インストール不要、データの外部送信なし。',
+    'about.section.privacy': 'Privacy',
+    'about.section.privacy.p1': 'ファイルや入力内容は、本アプリ本体から外部送信されません。CSP の <code>connect-src \'none\'</code> により、<code>fetch</code> 等のネットワーク送信はブラウザレベルで禁止されています。DevTools の Network タブで確認いただけます。',
+    'about.section.privacy.p2': '編集中の本文は <code>localStorage</code> や <code>IndexedDB</code> に保存されません。ウィンドウを閉じると消えます。保存したい内容はファイルに書き出してください。<br>UI 設定（Font / Wrap / Sys Font / Theme / Lang）は <code>localStorage</code> に保存され、同一オリジン内の別ウィンドウとリアルタイムに同期します。',
+    'about.section.privacy.p3': '本アプリ本体には計測機能は一切含まれていません（上記 CSP により外部送信が禁止されているため）。',
+    'about.section.privacy.p4': '一方、作者プロフィールや Tsui series のランディングページ等の情報ページでは、訪問数の把握に Cloudflare Web Analytics を利用しています（Cookie なし / フィンガープリントなし / クロスサイトトラッキングなし）。',
+    'about.section.privacy.p5': 'なお、別途プラットフォーム側（配信元サーバや中継事業者等）で計測・記録されている可能性はあります。',
+    'about.section.notice': '注意',
+    'about.section.notice.body': '本アプリは「開いたファイル 1 つ」に対してのみ読み書きを行います。フォルダ全体への権限は要求しません。File System Access API がない環境では、ダウンロード形式での書き出しになります（同じファイルへの上書きはできません）。',
+    'about.section.disclaimer': 'Disclaimer',
+    'about.section.disclaimer.body': '本アプリは現状有姿で提供され、動作の正確性・可用性について一切の保証はありません。ご利用は自己責任にてお願いします。ファイルのバックアップは利用者の責任で行ってください。',
+    'about.section.license': 'License (This App)',
+    'about.section.license.copyright': 'Copyright (c) 2026 <a href="https://hajimetwi3.github.io/hajimetwi3/" target="_blank" rel="noopener noreferrer">Hajime Tsui</a>',
+    'about.section.related': 'Related',
+    'about.section.related.series': '本アプリは <a href="https://hajimetwi3.github.io/hajimetwi3/Tsui-series/" target="_blank" rel="noopener noreferrer">Tsui series</a>（静かな道具たち）の一つです。',
+    'about.section.related.github': 'ソースコードは <a href="https://github.com/hajimetwi3/Tsui-note" target="_blank" rel="noopener noreferrer">GitHub</a> で公開しています。',
+
+    'status.charSuffix': '文字',
+    'flash.saved': '保存しました',
+    'flash.reload': '{encoding} で再読込',
+    'flash.editable': '書き込み可能にしました',
+
+    'ctx.heading.reload': '── 再読込 ──',
+    'ctx.heading.changeSaveFormat': '── 保存時の形式を変更 ──',
+    'ctx.encoding.utf8.reload': 'UTF-8 で再読込',
+    'ctx.encoding.utf8Bom.reload': 'UTF-8 BOM で再読込',
+    'ctx.encoding.shiftJis.reload': 'Shift_JIS で再読込',
+    'ctx.encoding.eucJp.reload': 'EUC-JP で再読込',
+    'ctx.encoding.utf16le.reload': 'UTF-16LE で再読込',
+    'ctx.encoding.utf8.set': 'UTF-8 (BOM無し) にする',
+    'ctx.encoding.utf8Bom.set': 'UTF-8 BOM にする',
+    'ctx.encoding.utf16leBom.set': 'UTF-16LE BOM にする',
+    'ctx.eol.lf': 'LF (Unix/macOS)',
+    'ctx.eol.crlf': 'CRLF (Windows)',
+    'ctx.eol.cr': 'CR (旧Mac)',
+
+    'confirm.discardOpen': '未保存の変更があります。破棄して別のファイルを開きますか?',
+    'confirm.binaryFile': '「{name}」はバイナリの可能性があります。それでも開きますか?',
+    'confirm.sizeReadonly': '大きなファイルです ({size})。\n読み取り専用で開きます。続行しますか?',
+    'confirm.sizeWarn': '大きめのファイルです ({size})。\n動作が重くなる可能性があります。開きますか?',
+    'confirm.encodingFallback': '{encoding} での保存はこのアプリでは非対応のため、UTF-8 で保存します。\n(以降、この形式で保存されます)',
+    'confirm.reloadDirty': '未保存の変更があります。破棄して再読込しますか?',
+    'confirm.decodeFailed': '{encoding} として正しくデコードできませんでした。\nこのエンコーディングではないファイルの可能性があります。\n\n文字化けする可能性がありますが、それでも読み込みますか?',
+    'confirm.releaseReadonly': '読み取り専用を解除します。大きなファイルの編集は動作が重くなる可能性があります。続行しますか?',
+    'confirm.popstateDiscard': '未保存の変更があります。破棄して閉じますか?',
+
+    'alert.openFailed': 'ファイルを開けませんでした: {msg}',
+    'alert.saveFailed': '保存に失敗しました: {msg}',
+    'alert.permWriteDenied': '書き込み権限がありません',
+    'alert.reloadFailed': '再読込に失敗: {msg}',
+    'alert.fileTooLarge': 'ファイルサイズが大きすぎます ({size} ≥ {limit})。\nこのアプリでは開けません。',
+    'alert.popupBlocked': '新しいウィンドウがブロックされました。\nブラウザの設定でポップアップを許可するか、アドレスバーから許可してください。',
+
+    'prompt.default.untitled': 'untitled.txt'
+  },
+
+  en: {
+    
+    'app.brand': 'TSUI NOTE',
+    'header.doc.untitled': 'untitled',
+    'header.docDirty.title': 'Unsaved changes',
+    'header.btn.open': 'Open',
+    'header.btn.open.title': 'Open file',
+    'header.btn.save': 'Save',
+    'header.btn.save.title': 'Save (Ctrl+S)',
+    'header.btn.saveAs': 'Save As',
+    'header.btn.saveAs.title': 'Save as (Ctrl+Shift+S)',
+    'header.btn.newWindow.title': 'Open in a new window',
+    'header.btn.settings.title': 'Settings',
+    'header.btn.lang.title.toEn': 'Switch to English',
+    'header.btn.lang.title.toJa': '日本語に切替',
+
+    'editor.placeholder': 'Start typing here.',
+
+    'footer.pill.encoding.title': 'Character encoding (click to change)',
+    'footer.pill.eol.title': 'Line endings (click to convert)',
+    'footer.hint.save': 'Save',
+    'footer.hint.saveAs': 'Save As',
+
+    'settings.font.label': 'Font',
+    'settings.font.dec.title': 'Decrease font size',
+    'settings.font.inc.title': 'Increase font size',
+    'settings.font.reset': 'reset',
+    'settings.font.reset.title': 'Reset',
+    'settings.wrap.label': 'Wrap',
+    'settings.wrap.on': 'Wrap',
+    'settings.wrap.on.title': 'Wrap long lines at editor width',
+    'settings.wrap.off': 'Scroll',
+    'settings.wrap.off.title': 'Do not wrap; scroll horizontally',
+    'settings.uiSize.label': 'Sys Font',
+    'settings.uiSize.s.title': 'Small (12.5px)',
+    'settings.uiSize.m.title': 'Medium (17.5px)',
+    'settings.uiSize.l.title': 'Large (20px)',
+    'settings.uiSize.xl.title': 'Extra large (23px)',
+    'settings.theme.label': 'Theme',
+    'settings.theme.calm.title': 'calm (default)',
+    'settings.about.label': 'ABOUT',
+    'settings.about.title': 'About this app',
+
+    'about.modalTitle': 'About',
+    'about.close': 'Close',
+    'about.section.about': 'About',
+    'about.section.about.body': '<strong>Tsui Note</strong> is a quiet, browser-based scratchpad. One window holds one buffer; this app does not manage files or folders. To work on multiple things at once, click ⧉ in the header to open another window.<br>Each window has its own buffer; UI settings are shared across windows.<br>No login, no install, no outbound traffic.',
+    'about.section.privacy': 'Privacy',
+    'about.section.privacy.p1': 'Files and editor input are not sent outside this app. The CSP <code>connect-src \'none\'</code> directive blocks <code>fetch</code> and other network requests at the browser level. You can verify this in the DevTools Network tab.',
+    'about.section.privacy.p2': 'The current buffer is not stored in <code>localStorage</code> or <code>IndexedDB</code>. It disappears when the window is closed; save to a file to keep it.<br>UI preferences (Font, Wrap, Sys Font, Theme, Lang) are stored in <code>localStorage</code> and synced live with other windows on the same origin.',
+    'about.section.privacy.p3': 'This app itself contains no analytics (the CSP above blocks any outbound traffic).',
+    'about.section.privacy.p4': 'Information pages such as the author profile and the Tsui series landing page do use Cloudflare Web Analytics for visit counts (no cookies, no fingerprinting, no cross-site tracking).',
+    'about.section.privacy.p5': 'Note that the platform itself (hosting provider, intermediaries, etc.) may also log requests independently.',
+    'about.section.notice': 'Notice',
+    'about.section.notice.body': 'This app reads and writes only the single file you open. It does not request permission for an entire folder. In environments without the File System Access API, files are written via download (saving over the same file is not possible).',
+    'about.section.disclaimer': 'Disclaimer',
+    'about.section.disclaimer.body': 'This app is provided AS IS, with no warranty of correctness or availability. Use at your own risk. Backing up your files is your responsibility.',
+    'about.section.license': 'License (This App)',
+    'about.section.license.copyright': 'Copyright (c) 2026 <a href="https://hajimetwi3.github.io/hajimetwi3/" target="_blank" rel="noopener noreferrer">Hajime Tsui</a>',
+    'about.section.related': 'Related',
+    'about.section.related.series': 'This app is part of <a href="https://hajimetwi3.github.io/hajimetwi3/Tsui-series/" target="_blank" rel="noopener noreferrer">Tsui series</a> (quiet tools).',
+    'about.section.related.github': 'The source code is available on <a href="https://github.com/hajimetwi3/Tsui-note" target="_blank" rel="noopener noreferrer">GitHub</a>.',
+
+    'status.charSuffix': 'chars',
+    'flash.saved': 'Saved',
+    'flash.reload': 'Reloaded as {encoding}',
+    'flash.editable': 'Made writable',
+
+    'ctx.heading.reload': '── Reload as ──',
+    'ctx.heading.changeSaveFormat': '── Change save format ──',
+    'ctx.encoding.utf8.reload': 'Reload as UTF-8',
+    'ctx.encoding.utf8Bom.reload': 'Reload as UTF-8 BOM',
+    'ctx.encoding.shiftJis.reload': 'Reload as Shift_JIS',
+    'ctx.encoding.eucJp.reload': 'Reload as EUC-JP',
+    'ctx.encoding.utf16le.reload': 'Reload as UTF-16LE',
+    'ctx.encoding.utf8.set': 'Save as UTF-8 (no BOM)',
+    'ctx.encoding.utf8Bom.set': 'Save as UTF-8 BOM',
+    'ctx.encoding.utf16leBom.set': 'Save as UTF-16LE BOM',
+    'ctx.eol.lf': 'LF (Unix/macOS)',
+    'ctx.eol.crlf': 'CRLF (Windows)',
+    'ctx.eol.cr': 'CR (classic Mac)',
+
+    'confirm.discardOpen': 'You have unsaved changes. Discard them and open another file?',
+    'confirm.binaryFile': '"{name}" may be a binary file. Open anyway?',
+    'confirm.sizeReadonly': 'Large file ({size}).\nIt will be opened read-only. Continue?',
+    'confirm.sizeWarn': 'Fairly large file ({size}).\nThis may slow things down. Open it?',
+    'confirm.encodingFallback': 'Saving as {encoding} is not supported by this app, so it will be saved as UTF-8.\n(Future saves will use UTF-8.)',
+    'confirm.reloadDirty': 'There are unsaved changes. Discard them and reload?',
+    'confirm.decodeFailed': 'Could not decode as {encoding}.\nThe file may not actually be in this encoding.\n\nLoad it anyway? Some characters may be replaced.',
+    'confirm.releaseReadonly': 'Disable read-only mode? Editing very large files may be slow. Continue?',
+    'confirm.popstateDiscard': 'You have unsaved changes. Discard them and leave?',
+
+    'alert.openFailed': 'Could not open file: {msg}',
+    'alert.saveFailed': 'Save failed: {msg}',
+    'alert.permWriteDenied': 'Write permission denied',
+    'alert.reloadFailed': 'Reload failed: {msg}',
+    'alert.fileTooLarge': 'File is too large ({size} ≥ {limit}).\nThis app cannot open it.',
+    'alert.popupBlocked': 'The new window was blocked.\nPlease allow popups in your browser settings or via the address bar.',
+
+    'prompt.default.untitled': 'untitled.txt'
+  }
+};
+
+function detectInitialLang() {
+  try {
+    const nav = (navigator.language || navigator.userLanguage || 'ja').toLowerCase();
+    if (nav.startsWith('ja')) return 'ja';
+    return 'en';
+  } catch {
+    return 'ja';
+  }
+}
+
+let currentLang = (() => {
+  const v = safeGetStorage(LANG_KEY);
+  if (VALID_LANGS.includes(v)) return v;
+  return detectInitialLang();
+})();
+
+function setLang(lang) {
+  if (!VALID_LANGS.includes(lang)) return false;
+  currentLang = lang;
+  return true;
+}
+function getLang() { return currentLang; }
+
+function tr(key, vars) {
+  const cur = I18N_DICT[currentLang];
+  let str = cur && Object.prototype.hasOwnProperty.call(cur, key) ? cur[key] : null;
+  if (str == null) {
+    const ja = I18N_DICT.ja;
+    str = ja && Object.prototype.hasOwnProperty.call(ja, key) ? ja[key] : key;
+  }
+  if (vars && typeof str === 'string') {
+    str = str.replace(/\{(\w+)\}/g, (m, k) => Object.prototype.hasOwnProperty.call(vars, k) ? vars[k] : m);
+  }
+  return str;
+}
+
+function renderI18n(root) {
+  const r = root || document;
+  r.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) el.textContent = tr(key);
+  });
+  r.querySelectorAll('[data-i18n-attr]').forEach(el => {
+    const spec = el.getAttribute('data-i18n-attr');
+    if (!spec) return;
+    for (const pair of spec.split('|')) {
+      const eq = pair.indexOf('=');
+      if (eq < 0) continue;
+      const attr = pair.slice(0, eq).trim();
+      const key  = pair.slice(eq + 1).trim();
+      if (attr && key) el.setAttribute(attr, tr(key));
+    }
+  });
+  r.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (key) el.innerHTML = tr(key);
+  });
+  document.documentElement.setAttribute('lang', currentLang);
+}
+
+const HAS_FSA_OPEN = typeof window.showOpenFilePicker === 'function';
+const HAS_FSA_SAVE = typeof window.showSaveFilePicker === 'function';
+
+const SIZE_WARN = 10 * 1024 * 1024;      
+const SIZE_READONLY = 30 * 1024 * 1024;  
+const SIZE_REJECT = 50 * 1024 * 1024;    
+
+const BOM_UTF8  = [0xEF, 0xBB, 0xBF];
+const BOM_UTF16LE = [0xFF, 0xFE];
+const BOM_UTF16BE = [0xFE, 0xFF];
+
+function startsWith(bytes, prefix) {
+  if (bytes.length < prefix.length) return false;
+  for (let i = 0; i < prefix.length; i++) if (bytes[i] !== prefix[i]) return false;
+  return true;
+}
+
+function scoreJapanese(text) {
+  let score = 0;
+  for (const c of text) {
+    const code = c.codePointAt(0);
+    if      (code >= 0x3040 && code <= 0x309F) score += 5;   
+    else if (code >= 0x30A0 && code <= 0x30FF) score += 5;   
+    else if (code >= 0x4E00 && code <= 0x9FFF) score += 3;   
+    else if (code >= 0xFF61 && code <= 0xFF9F) score += 1;   
+    else if (code === 0xFFFD)                  score -= 100; 
+    else if (code < 0x20 && code !== 0x09 && code !== 0x0A && code !== 0x0D) score -= 50;
+    
+  }
+  return score;
+}
+
+function decodeBytes(arrayBuffer) {
+  const bytes = new Uint8Array(arrayBuffer);
+
+  if (startsWith(bytes, BOM_UTF8)) {
+    const view = bytes.subarray(3);
+    return { text: new TextDecoder('utf-8').decode(view), encoding: 'UTF-8', hasBom: true };
+  }
+  if (startsWith(bytes, BOM_UTF16LE)) {
+    const view = bytes.subarray(2);
+    return { text: new TextDecoder('utf-16le').decode(view), encoding: 'UTF-16LE', hasBom: true };
+  }
+  if (startsWith(bytes, BOM_UTF16BE)) {
+    const view = bytes.subarray(2);
+    return { text: new TextDecoder('utf-16be').decode(view), encoding: 'UTF-16BE', hasBom: true };
+  }
+
+  try {
+    const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    return { text, encoding: 'UTF-8', hasBom: false };
+  } catch {
+
+    
+
+    let textSjis = null, textEuc = null;
+    try { textSjis = new TextDecoder('shift_jis', { fatal: true }).decode(bytes); } catch {}
+    try { textEuc  = new TextDecoder('euc-jp',     { fatal: true }).decode(bytes); } catch {}
+
+    if (textSjis && textEuc) {
+      const sjisScore = scoreJapanese(textSjis);
+      const eucScore  = scoreJapanese(textEuc);
+      if (eucScore > sjisScore + 5) {
+        return { text: textEuc, encoding: 'EUC-JP', hasBom: false };
+      }
+      return { text: textSjis, encoding: 'Shift_JIS', hasBom: false };
+    }
+    if (textSjis) return { text: textSjis, encoding: 'Shift_JIS', hasBom: false };
+    if (textEuc)  return { text: textEuc,  encoding: 'EUC-JP',    hasBom: false };
+
+    const text = new TextDecoder('utf-8').decode(bytes);
+    return { text, encoding: 'UTF-8?', hasBom: false };
+  }
+}
+
+function detectEol(text) {
+
+  
+  
+  let sample = text.length > 65536 ? text.slice(0, 65536) : text;
+  if (text.length > 65536 && (!/[\r\n]/.test(sample) || sample.endsWith('\r'))) {
+    sample = text;
+  }
+  let lf = 0, crlf = 0, cr = 0;
+  for (let i = 0; i < sample.length; i++) {
+    const c = sample.charCodeAt(i);
+    if (c === 0x0D) {
+      if (sample.charCodeAt(i + 1) === 0x0A) { crlf++; i++; }
+      else cr++;
+    } else if (c === 0x0A) {
+      lf++;
+    }
+  }
+  if (crlf >= lf && crlf >= cr) return crlf > 0 ? 'CRLF' : 'LF';
+  if (cr > lf) return 'CR';
+  return 'LF';
+}
+
+function normalizeEol(text, eol) {
+  const lf = text.replace(/\r\n?|\n/g, '\n');
+  if (eol === 'CRLF') return lf.replace(/\n/g, '\r\n');
+  if (eol === 'CR')   return lf.replace(/\n/g, '\r');
+  return lf;
+}
+
+function encodeForSave(text, meta) {
+  
+  const normalized = normalizeEol(text, meta.eol);
+
+  const enc = meta.encoding;
+  
+  if (enc === 'UTF-16LE' || enc === 'UTF-16BE') {
+    const le = (enc === 'UTF-16LE');
+    
+    const len = normalized.length;
+    const out = new Uint8Array((meta.hasBom ? 2 : 0) + len * 2);
+    let p = 0;
+    if (meta.hasBom) {
+      if (le) { out[0] = 0xFF; out[1] = 0xFE; }
+      else    { out[0] = 0xFE; out[1] = 0xFF; }
+      p = 2;
+    }
+    for (let i = 0; i < len; i++) {
+      const c = normalized.charCodeAt(i);
+      if (le) { out[p++] = c & 0xFF; out[p++] = (c >> 8) & 0xFF; }
+      else    { out[p++] = (c >> 8) & 0xFF; out[p++] = c & 0xFF; }
+    }
+    return { bytes: out, fallback: false, actualEncoding: enc };
+  }
+
+  const encoder = new TextEncoder(); 
+  const body = encoder.encode(normalized);
+  const isUtf8 = (enc === 'UTF-8' || enc === 'UTF-8?');
+  const fallback = !isUtf8;
+
+  if (isUtf8 && meta.hasBom) {
+    const out = new Uint8Array(body.length + 3);
+    out.set(BOM_UTF8, 0);
+    out.set(body, 3);
+    return { bytes: out, fallback: false, actualEncoding: 'UTF-8' };
+  }
+  return { bytes: body, fallback, actualEncoding: 'UTF-8' };
+}
+
+const FONT_KEY = 'tsui-note-font-size';
+const DEFAULT_FONT = 13;
+const MIN_FONT = 9;
+const MAX_FONT = 32;
+let fontSize = (() => {
+  const v = parseInt(safeGetStorage(FONT_KEY), 10);
+  return (isFinite(v) && v >= MIN_FONT && v <= MAX_FONT) ? v : DEFAULT_FONT;
+})();
+
+const UI_SIZE_KEY = 'tsui-note-ui-size';
+const UI_SIZES = { s: 12.5, m: 17.5, l: 20, xl: 23 };
+const UI_FONT_DELTAS = { s: 0, m: 2, l: 4, xl: 7 };
+let uiSize = (() => {
+  const v = safeGetStorage(UI_SIZE_KEY);
+  return (v === 's' || v === 'm' || v === 'l' || v === 'xl') ? v : 's';
+})();
+
+const WRAP_KEY = 'tsui-note-wrap';
+let wrapMode = (() => {
+  const v = safeGetStorage(WRAP_KEY);
+  return (v === 'on' || v === 'off') ? v : 'on';
+})();
+
+const THEME_KEY = 'tsui-note-theme';
+const VALID_THEMES = ['calm', 'green', 'amber', 'red', 'pink', 'cyber'];
+let themeMode = (() => {
+  const v = safeGetStorage(THEME_KEY);
+  return VALID_THEMES.includes(v) ? v : 'calm';
+})();
+
+const $editor = document.getElementById('editor');
+const $docName = document.getElementById('doc-name');
+const $docDirty = document.getElementById('doc-dirty');
+const $btnOpen = document.getElementById('btn-open');
+const $btnSave = document.getElementById('btn-save');
+const $btnSaveAs = document.getElementById('btn-save-as');
+const $btnNewWindow = document.getElementById('btn-new-window');
+const $btnSettings = document.getElementById('btn-settings');
+const $btnLang = document.getElementById('btn-lang');
+const $statusInfo = document.getElementById('status-info');
+const $pillReadonly = document.getElementById('pill-readonly');
+const $pillEncoding = document.getElementById('pill-encoding');
+const $pillEol = document.getElementById('pill-eol');
+const $popover = document.getElementById('settings-popover');
+const $popoverBackdrop = document.getElementById('popover-backdrop');
+const $btnAbout = document.getElementById('btn-about');
+const $modalAbout = document.getElementById('modal-about');
+const $btnModalClose = document.getElementById('btn-modal-close');
+const $ctxMenu = document.getElementById('context-menu');
+const $fontDisplay = document.getElementById('font-size-display');
+const $btnFontDec = document.getElementById('btn-font-dec');
+const $btnFontInc = document.getElementById('btn-font-inc');
+const $btnFontReset = document.getElementById('btn-font-reset');
+
+function revealHidden(el) {
+  el.classList.remove('initially-hidden');
+  el.style.display = '';
+}
+
+function applyFontSize() {
+  $editor.style.fontSize = fontSize + 'px';
+  $fontDisplay.textContent = fontSize + 'px';
+  $btnFontDec.disabled = (fontSize <= MIN_FONT);
+  $btnFontInc.disabled = (fontSize >= MAX_FONT);
+}
+function applyUiSize() {
+  document.documentElement.style.setProperty('--ui-font-delta', UI_FONT_DELTAS[uiSize] + 'px');
+  document.querySelectorAll('.ui-size-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.size === uiSize);
+  });
+}
+function applyWrapMode() {
+  document.body.classList.toggle('wrap-on', wrapMode === 'on');
+  document.querySelectorAll('.wrap-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.wrap === wrapMode);
+  });
+}
+function applyTheme() {
+  if (themeMode === 'calm') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.dataset.theme = themeMode;
+  }
+  document.querySelectorAll('.theme-dot').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === themeMode);
+  });
+}
+
+function setFontSize(v) {
+  fontSize = Math.min(MAX_FONT, Math.max(MIN_FONT, v));
+  applyFontSize();
+  try { localStorage.setItem(FONT_KEY, String(fontSize)); } catch {}
+}
+function setUiSize(v) {
+  if (!Object.prototype.hasOwnProperty.call(UI_SIZES, v)) return;
+  uiSize = v;
+  applyUiSize();
+  try { localStorage.setItem(UI_SIZE_KEY, uiSize); } catch {}
+}
+function setWrapMode(v) {
+  if (v !== 'on' && v !== 'off') return;
+  wrapMode = v;
+  applyWrapMode();
+  try { localStorage.setItem(WRAP_KEY, wrapMode); } catch {}
+}
+function setThemeMode(v) {
+  if (!VALID_THEMES.includes(v)) return;
+  themeMode = v;
+  applyTheme();
+  try { localStorage.setItem(THEME_KEY, themeMode); } catch {}
+}
+
+applyFontSize();
+applyUiSize();
+applyWrapMode();
+applyTheme();
+
+$btnFontDec.addEventListener('click', () => setFontSize(fontSize - 1));
+$btnFontInc.addEventListener('click', () => setFontSize(fontSize + 1));
+$btnFontReset.addEventListener('click', () => setFontSize(DEFAULT_FONT));
+document.querySelectorAll('.ui-size-btn').forEach(b => {
+  b.addEventListener('click', () => setUiSize(b.dataset.size));
+});
+document.querySelectorAll('.wrap-btn').forEach(b => {
+  b.addEventListener('click', () => setWrapMode(b.dataset.wrap));
+});
+document.querySelectorAll('.theme-dot').forEach(b => {
+  b.addEventListener('click', () => setThemeMode(b.dataset.theme));
+});
+
+window.addEventListener('storage', (e) => {
+  if (!e.key) return;
+  if (e.key === FONT_KEY) {
+    const v = parseInt(e.newValue, 10);
+    if (isFinite(v) && v >= MIN_FONT && v <= MAX_FONT) {
+      fontSize = v;
+      applyFontSize();
+    }
+  } else if (e.key === UI_SIZE_KEY) {
+    if (Object.prototype.hasOwnProperty.call(UI_SIZES, e.newValue)) {
+      uiSize = e.newValue;
+      applyUiSize();
+    }
+  } else if (e.key === WRAP_KEY) {
+    if (e.newValue === 'on' || e.newValue === 'off') {
+      wrapMode = e.newValue;
+      applyWrapMode();
+    }
+  } else if (e.key === THEME_KEY) {
+    if (VALID_THEMES.includes(e.newValue)) {
+      themeMode = e.newValue;
+      applyTheme();
+    }
+  } else if (e.key === LANG_KEY) {
+    if (VALID_LANGS.includes(e.newValue)) {
+      setLang(e.newValue);
+      renderI18n();
+      updateLangButton();
+
+      refreshLocalizedLabels();
+    }
+  }
+});
+
+function updateLangButton() {
+  $btnLang.textContent = currentLang === 'ja' ? 'EN' : '日本語';
+  $btnLang.setAttribute('title', currentLang === 'ja' ? tr('header.btn.lang.title.toEn') : tr('header.btn.lang.title.toJa'));
+}
+function setLangPref(lang) {
+  if (!VALID_LANGS.includes(lang)) return;
+  setLang(lang);
+  try { localStorage.setItem(LANG_KEY, lang); } catch {}
+  renderI18n();
+  updateLangButton();
+  
+  refreshLocalizedLabels();
+}
+
+function refreshLocalizedLabels() {
+  $docName.textContent = doc.name || tr('header.doc.untitled');
+  updateStatus();
+}
+$btnLang.addEventListener('click', () => {
+  setLangPref(currentLang === 'ja' ? 'en' : 'ja');
+});
+
+let doc = {
+  handle: null,           
+  name: null,             
+  content: '',
+  originalContent: '',
+  originalBytes: 0,
+  encoding: 'UTF-8',
+  hasBom: false,
+  eol: 'LF',
+  readonly: false,
+  metaDirty: false,
+};
+
+function isDirty() { return doc.content !== doc.originalContent || !!doc.metaDirty; }
+function isEmptyState() {
+  
+  return !doc.name && doc.content.length === 0 && doc.originalContent.length === 0;
+}
+
+function applyDoc() {
+
+  if ($editor.value !== doc.content) {
+    const wasFocused = (document.activeElement === $editor);
+    const ss = $editor.selectionStart, se = $editor.selectionEnd;
+    $editor.value = doc.content;
+    if (wasFocused) {
+      try { $editor.setSelectionRange(Math.min(ss, doc.content.length), Math.min(se, doc.content.length)); } catch {}
+    }
+  }
+  $editor.readOnly = !!doc.readonly;
+  $docName.textContent = doc.name || tr('header.doc.untitled');
+  if (isDirty()) revealHidden($docDirty);
+  else $docDirty.classList.add('initially-hidden');
+  updateSaveButton();
+  updateStatus();
+}
+
+async function openFile() {
+  if (isDirty() && !confirm(tr('confirm.discardOpen'))) return;
+
+  if (HAS_FSA_OPEN) {
+    try {
+      const [handle] = await window.showOpenFilePicker({ multiple: false });
+      if (!handle) return;
+      const file = await handle.getFile();
+      await loadFile(file, file.name, handle);
+    } catch (e) {
+      if (e.name !== 'AbortError') alert(tr('alert.openFailed', { msg: e.message }));
+    }
+  } else {
+    
+    const inp = document.createElement('input');
+    inp.type = 'file';
+    inp.style.display = 'none';
+    let cleaned = false;
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      inp.remove();
+    };
+    inp.addEventListener('change', async () => {
+      try {
+        const file = inp.files && inp.files[0];
+        if (file) await loadFile(file, file.name, null);
+      } finally {
+        cleanup();
+      }
+    });
+
+    inp.addEventListener('cancel', cleanup);
+    document.body.appendChild(inp);
+    inp.click();
+  }
+}
+
+const BINARY_EXTS = new Set([
+  'png','jpg','jpeg','gif','bmp','ico','webp',
+  'pdf','zip','tar','gz','7z','rar',
+  'exe','dll','so','dylib','bin',
+  'mp3','mp4','mov','avi','wav','ogg','webm','flac',
+  'woff','woff2','ttf','otf','eot',
+  'psd','ai','sketch','xlsx','docx','pptx'
+]);
+function isProbablyText(name) {
+  const parts = name.split('.');
+  if (parts.length < 2) return true;
+  return !BINARY_EXTS.has(parts.pop().toLowerCase());
+}
+
+async function loadFile(file, name, handle) {
+  if (!isProbablyText(name)) {
+    if (!confirm(tr('confirm.binaryFile', { name }))) return;
+  }
+
+  if (file.size >= SIZE_REJECT) {
+    alert(tr('alert.fileTooLarge', { size: formatSize(file.size), limit: formatSize(SIZE_REJECT) }));
+    return;
+  }
+  let readonly = false;
+  if (file.size >= SIZE_READONLY) {
+    if (!confirm(tr('confirm.sizeReadonly', { size: formatSize(file.size) }))) return;
+    readonly = true;
+  } else if (file.size >= SIZE_WARN) {
+    if (!confirm(tr('confirm.sizeWarn', { size: formatSize(file.size) }))) return;
+  }
+
+  try {
+    const buf = await file.arrayBuffer();
+    const decoded = decodeBytes(buf);
+    const rawText = decoded.text;
+    
+    const eol = detectEol(rawText);
+
+    const text = normalizeEol(rawText, 'LF');
+
+    doc = {
+      handle: handle || null,
+      name,
+      content: text,
+      originalContent: text,
+      originalBytes: file.size,
+      encoding: decoded.encoding,
+      hasBom: decoded.hasBom,
+      eol,
+      readonly,
+      metaDirty: false,
+    };
+    applyDoc();
+    $editor.focus();
+  } catch (e) {
+    alert(tr('alert.openFailed', { msg: e.message }));
+  }
+}
+
+async function ensurePermission(handle) {
+  const perm = await handle.queryPermission({ mode: 'readwrite' });
+  if (perm === 'granted') return;
+  const req = await handle.requestPermission({ mode: 'readwrite' });
+  if (req !== 'granted') throw new Error(tr('alert.permWriteDenied'));
+}
+
+function buildSaveBytes() {
+  const result = encodeForSave(doc.content, { encoding: doc.encoding, hasBom: doc.hasBom, eol: doc.eol });
+  if (result.fallback) {
+    if (!confirm(tr('confirm.encodingFallback', { encoding: doc.encoding }))) return null;
+  }
+  return result;
+}
+
+function finishSave(result) {
+
+  const cleanContent = normalizeEol(doc.content, 'LF');
+  doc.content = cleanContent;
+  doc.originalContent = cleanContent;
+  doc.originalBytes = result.bytes.byteLength;
+  doc.metaDirty = false;
+
+  if (result.fallback) {
+    doc.encoding = result.actualEncoding;
+    doc.hasBom = false;
+  } else if (doc.encoding !== result.actualEncoding) {
+    doc.encoding = result.actualEncoding;
+  }
+  applyDoc();
+  flashStatus(tr('flash.saved'));
+}
+
+async function saveCurrent() {
+  if (doc.readonly) return;
+  if (!isDirty()) return;
+  
+  flushInputDebounce();
+
+  if (HAS_FSA_SAVE && doc.handle) {
+    const result = buildSaveBytes();
+    if (!result) return;
+    try {
+      await ensurePermission(doc.handle);
+      const writable = await doc.handle.createWritable();
+      await writable.write(result.bytes);
+      await writable.close();
+      finishSave(result);
+    } catch (e1) {
+
+      const isStaleState =
+        e1.name === 'InvalidStateError' ||
+        /state had changed|state cached/i.test(e1.message || '');
+      if (isStaleState) {
+        await saveAs();
+        return;
+      }
+      alert(tr('alert.saveFailed', { msg: e1.message }));
+    }
+  } else {
+    
+    await saveAs();
+  }
+}
+
+async function saveAs() {
+  if (doc.readonly) return;
+  
+  flushInputDebounce();
+
+  const result = buildSaveBytes();
+  if (!result) return;
+
+  if (HAS_FSA_SAVE) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: doc.name || tr('prompt.default.untitled'),
+      });
+      const writable = await handle.createWritable();
+      await writable.write(result.bytes);
+      await writable.close();
+      doc.handle = handle;
+      doc.name = handle.name;
+      finishSave(result);
+    } catch (e) {
+      if (e.name !== 'AbortError') alert(tr('alert.saveFailed', { msg: e.message }));
+    }
+  } else {
+    
+    try {
+      const blob = new Blob([result.bytes], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.name || tr('prompt.default.untitled');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      finishSave(result);
+    } catch (e) {
+      alert(tr('alert.saveFailed', { msg: e.message }));
+    }
+  }
+}
+
+$btnOpen.addEventListener('click', openFile);
+$btnSave.addEventListener('click', saveCurrent);
+$btnSaveAs.addEventListener('click', saveAs);
+
+$btnNewWindow.addEventListener('click', () => {
+
+  try {
+    const w = window.open(location.href, '_blank');
+    if (!w) alert(tr('alert.popupBlocked'));
+  } catch {
+    alert(tr('alert.popupBlocked'));
+  }
+});
+
+function openPopover() {
+  $popover.hidden = false;
+  $popoverBackdrop.hidden = false;
+  $btnSettings.setAttribute('aria-expanded', 'true');
+}
+function closePopover() {
+  $popover.hidden = true;
+  $popoverBackdrop.hidden = true;
+  $btnSettings.setAttribute('aria-expanded', 'false');
+}
+$btnSettings.addEventListener('click', () => {
+  if ($popover.hidden) openPopover(); else closePopover();
+});
+$popoverBackdrop.addEventListener('click', closePopover);
+
+function openAbout() { $modalAbout.classList.add('open'); closePopover(); }
+function closeAbout() { $modalAbout.classList.remove('open'); }
+$btnAbout.addEventListener('click', openAbout);
+$btnModalClose.addEventListener('click', closeAbout);
+$modalAbout.addEventListener('click', (e) => {
+  if (e.target === $modalAbout) closeAbout();
+});
+
+let inputDebounceTimer = null;
+function flushInputDebounce() {
+  if (inputDebounceTimer !== null) {
+    clearTimeout(inputDebounceTimer);
+    inputDebounceTimer = null;
+    updateStatus();
+  }
+}
+$editor.addEventListener('input', () => {
+  doc.content = $editor.value;
+  if (isDirty()) revealHidden($docDirty); else $docDirty.classList.add('initially-hidden');
+  updateSaveButton();
+  clearTimeout(inputDebounceTimer);
+  inputDebounceTimer = setTimeout(() => {
+    inputDebounceTimer = null;
+    updateStatus();
+  }, 120);
+});
+
+function updateSaveButton() {
+  if (doc.readonly) { $btnSave.disabled = true; return; }
+  $btnSave.disabled = !isDirty();
+}
+
+function updateStatus() {
+  if (isEmptyState()) {
+    $statusInfo.textContent = '';
+    updatePills();
+    return;
+  }
+  let bytesLabel;
+  if (!isDirty() && doc.originalBytes > 0) {
+    
+    bytesLabel = formatSize(doc.originalBytes);
+  } else if (doc.originalBytes > 0) {
+    
+    const origLen = doc.originalContent.length;
+    const ratio = origLen > 0 ? (doc.originalBytes / origLen) : 1;
+    const est = Math.round(doc.content.length * ratio);
+    bytesLabel = '~' + formatSize(est);
+  } else {
+    
+    try {
+      const enc = new TextEncoder();
+      bytesLabel = '~' + formatSize(enc.encode(doc.content).length);
+    } catch {
+      bytesLabel = '~' + formatSize(doc.content.length);
+    }
+  }
+  const name = doc.name || tr('header.doc.untitled');
+  $statusInfo.textContent = `${name} · ${bytesLabel} · ${doc.content.length.toLocaleString()} ${tr('status.charSuffix')}`;
+  updatePills();
+}
+
+function updatePills() {
+  if (isEmptyState()) {
+    $pillReadonly.classList.add('initially-hidden');
+    $pillEncoding.classList.add('initially-hidden');
+    $pillEol.classList.add('initially-hidden');
+    return;
+  }
+  if (doc.readonly) revealHidden($pillReadonly);
+  else $pillReadonly.classList.add('initially-hidden');
+  revealHidden($pillEncoding);
+  $pillEncoding.textContent = doc.encoding + (doc.hasBom ? ' BOM' : '');
+  revealHidden($pillEol);
+  $pillEol.textContent = doc.eol;
+}
+
+function showContextMenu(x, y, items, placement) {
+  $ctxMenu.innerHTML = '';
+  for (const it of items) {
+    if (it.separator) {
+      const sep = document.createElement('div');
+      sep.className = 'context-separator';
+      $ctxMenu.appendChild(sep);
+      continue;
+    }
+    const el = document.createElement('div');
+    el.className = 'context-item' + (it.heading ? ' heading' : '');
+    el.textContent = it.label;
+    if (!it.heading && it.action) {
+      el.addEventListener('click', () => {
+        hideContextMenu();
+        it.action();
+      });
+    }
+    $ctxMenu.appendChild(el);
+  }
+  $ctxMenu.style.display = 'block';
+  
+  const rect = $ctxMenu.getBoundingClientRect();
+  let top = y;
+  if (placement === 'up') top = y - rect.height;
+  if (top < 4) top = 4;
+  if (top + rect.height > window.innerHeight - 4) top = window.innerHeight - rect.height - 4;
+  let left = x;
+  if (left + rect.width > window.innerWidth - 4) left = window.innerWidth - rect.width - 4;
+  if (left < 4) left = 4;
+  $ctxMenu.style.top = top + 'px';
+  $ctxMenu.style.left = left + 'px';
+}
+function hideContextMenu() { $ctxMenu.style.display = 'none'; }
+
+document.addEventListener('click', (e) => {
+  if (!$ctxMenu.contains(e.target)) hideContextMenu();
+});
+
+function markDirty() {
+  doc.metaDirty = true;
+  updateSaveButton();
+  if (isDirty()) revealHidden($docDirty);
+}
+
+$pillEncoding.addEventListener('click', (e) => {
+  if (isEmptyState()) return;
+  e.stopPropagation();
+
+  const items = [];
+  if (doc.handle) {
+    items.push({ label: tr('ctx.heading.reload'), heading: true });
+    items.push({ label: tr('ctx.encoding.utf8.reload'),     action: () => reloadWithEncoding('UTF-8',     false) });
+    items.push({ label: tr('ctx.encoding.utf8Bom.reload'),  action: () => reloadWithEncoding('UTF-8',     true)  });
+    items.push({ label: tr('ctx.encoding.shiftJis.reload'), action: () => reloadWithEncoding('Shift_JIS', false) });
+    items.push({ label: tr('ctx.encoding.eucJp.reload'),    action: () => reloadWithEncoding('EUC-JP',    false) });
+    items.push({ label: tr('ctx.encoding.utf16le.reload'),  action: () => reloadWithEncoding('UTF-16LE',  false) });
+    items.push({ separator: true });
+  }
+  items.push({ label: tr('ctx.heading.changeSaveFormat'), heading: true });
+  items.push({
+    label: tr('ctx.encoding.utf8.set') + (doc.encoding === 'UTF-8' && !doc.hasBom ? ' ✓' : ''),
+    action: () => { doc.encoding = 'UTF-8'; doc.hasBom = false; markDirty(); updateStatus(); }
+  });
+  items.push({
+    label: tr('ctx.encoding.utf8Bom.set') + (doc.encoding === 'UTF-8' && doc.hasBom ? ' ✓' : ''),
+    action: () => { doc.encoding = 'UTF-8'; doc.hasBom = true; markDirty(); updateStatus(); }
+  });
+  items.push({
+    label: tr('ctx.encoding.utf16leBom.set') + (doc.encoding === 'UTF-16LE' ? ' ✓' : ''),
+    action: () => { doc.encoding = 'UTF-16LE'; doc.hasBom = true; markDirty(); updateStatus(); }
+  });
+  const rect = $pillEncoding.getBoundingClientRect();
+  showContextMenu(rect.left, rect.top - 8, items, 'up');
+});
+
+$pillEol.addEventListener('click', (e) => {
+  if (isEmptyState()) return;
+  e.stopPropagation();
+  const items = [
+    { label: tr('ctx.eol.lf')   + (doc.eol === 'LF'   ? ' ✓' : ''), action: () => { doc.eol = 'LF';   markDirty(); updateStatus(); } },
+    { label: tr('ctx.eol.crlf') + (doc.eol === 'CRLF' ? ' ✓' : ''), action: () => { doc.eol = 'CRLF'; markDirty(); updateStatus(); } },
+    { label: tr('ctx.eol.cr')   + (doc.eol === 'CR'   ? ' ✓' : ''), action: () => { doc.eol = 'CR';   markDirty(); updateStatus(); } },
+  ];
+  const rect = $pillEol.getBoundingClientRect();
+  showContextMenu(rect.left, rect.top - 8, items, 'up');
+});
+
+$pillReadonly.addEventListener('click', () => {
+  if (isEmptyState()) return;
+  if (doc.readonly) {
+    if (confirm(tr('confirm.releaseReadonly'))) {
+      doc.readonly = false;
+      $editor.readOnly = false;
+      updateStatus();
+      updateSaveButton();
+      flashStatus(tr('flash.editable'));
+    }
+  }
+});
+
+async function reloadWithEncoding(encoding, hasBom) {
+  if (!doc.handle) return;
+  if (isDirty()) {
+    if (!confirm(tr('confirm.reloadDirty'))) return;
+  }
+  try {
+    const file = await doc.handle.getFile();
+    const buffer = await file.arrayBuffer();
+    let bytes = new Uint8Array(buffer);
+    
+    if (startsWith(bytes, BOM_UTF8)) bytes = bytes.subarray(3);
+    else if (startsWith(bytes, BOM_UTF16LE)) bytes = bytes.subarray(2);
+    else if (startsWith(bytes, BOM_UTF16BE)) bytes = bytes.subarray(2);
+
+    const label = encoding.toLowerCase().replace('_', '-');
+    let text;
+    try {
+      text = new TextDecoder(label, { fatal: true }).decode(bytes);
+    } catch {
+      const ok = confirm(tr('confirm.decodeFailed', { encoding }));
+      if (!ok) return;
+      text = new TextDecoder(label).decode(bytes);
+    }
+
+    const eol = detectEol(text);
+    const normalizedText = normalizeEol(text, 'LF');
+
+    doc.content = normalizedText;
+    doc.originalContent = normalizedText;
+    doc.originalBytes = file.size;
+    doc.encoding = encoding;
+    doc.hasBom = hasBom;
+    doc.eol = eol;
+    doc.readonly = (file.size >= SIZE_READONLY);
+    doc.metaDirty = false;
+    applyDoc();
+    flashStatus(tr('flash.reload', { encoding }));
+  } catch (e) {
+    alert(tr('alert.reloadFailed', { msg: e.message }));
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    hideContextMenu();
+    if (!$popover.hidden) closePopover();
+    if ($modalAbout.classList.contains('open')) closeAbout();
+  }
+  const mod = e.ctrlKey || e.metaKey;
+  if (!mod) {
+    if (e.key === 'Tab' && document.activeElement === $editor && !$editor.readOnly) {
+      e.preventDefault();
+      const s = $editor.selectionStart, ee = $editor.selectionEnd;
+      $editor.value = $editor.value.slice(0, s) + '  ' + $editor.value.slice(ee);
+      $editor.selectionStart = $editor.selectionEnd = s + 2;
+      $editor.dispatchEvent(new Event('input'));
+    }
+    return;
+  }
+  const k = e.key.toLowerCase();
+  if (k === 's') {
+    e.preventDefault();
+    if (e.shiftKey) saveAs();
+    else saveCurrent();
+  }
+});
+
+window.addEventListener('beforeunload', (e) => {
+  if (isDirty()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+(() => {
+  try { history.pushState({ tsuiGuard: true }, ''); } catch {}
+
+  window.addEventListener('popstate', () => {
+    if (isDirty()) {
+      if (confirm(tr('confirm.popstateDiscard'))) {
+        history.back();
+      } else {
+        try { history.pushState({ tsuiGuard: true }, ''); } catch {}
+      }
+    }
+  });
+})();
+
+function formatSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+let flashTimer = null;
+function flashStatus(msg) {
+  $statusInfo.textContent = '✓ ' + msg;
+  $statusInfo.style.color = 'var(--accent)';
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => {
+    $statusInfo.style.color = '';
+    updateStatus();
+  }, 1500);
+}
+
+(() => {
+  const build = document.documentElement.dataset.build;
+  if (build !== 'cloudflare') return;
+  const scheme = location.protocol;
+  if (scheme !== 'http:' && scheme !== 'https:') return;
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+})();
+
+renderI18n();
+updateLangButton();
+applyDoc();
+</script>
+</body>
+</html>
