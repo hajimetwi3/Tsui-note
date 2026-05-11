@@ -82,6 +82,8 @@ UI 設定（Font / Wrap / Sys Font / Theme / Lang）は localStorage に保存�
 ---  
 
 ## アナウンス  
+- X: [https://x.com/hajimetwi3/status/2053658377407086748](https://x.com/hajimetwi3/status/2053658377407086748)
+- Note: [https://note.com/hajimetwi3/n/nd6ac4c75acc8](https://note.com/hajimetwi3/n/nd6ac4c75acc8)  
 
 ## 作者  
 
